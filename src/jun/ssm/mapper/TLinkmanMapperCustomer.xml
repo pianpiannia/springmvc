@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="jun.ssm.mapper.TLinkmanMapperCustomer">
+	
+	<!-- 定义联系人查询的sql片段 -->
+	<sql id="query_Linkman_where">
+	<!-- 使用动态sql,通过if判断，满足条件进行sql拼接 -->
+	<!-- 查询条件通过LinkManQueryVo包装对象中linkmanCustomer属性传递 -->
+		<if test="linkmanCustomer!=null">
+			<if test="linkmanCustomer.lkmname!=null and linkmanCustomer!=''">
+				lkmname LIKE '%${linkmanCustomer.lkmname}%'
+			</if>
+		</if>
+		
+	</sql>
+	
+	<!-- parameterType传入包装对象 
+		resultType建议使用拓展对象
+	-->
+	<select id="findLinkManByName" 
+	parameterType="jun.ssm.po.TLinkmanQueryVo" 
+	resultType="jun.ssm.po.TLinkmanCustomer">
+		SELECT * FROM t_linkman 
+		<where>
+			<include refid="query_Linkman_where"></include>
+		</where>
+		
+	</select>
+	
+</mapper>
